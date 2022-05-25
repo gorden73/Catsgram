@@ -26,7 +26,7 @@ public class PostFeedController {
     }
 
     @PostMapping
-    List<Post> getFriendsFeed(@RequestBody String params){
+    List<Post> getFriendsFeed(@RequestBody String params) {
         ObjectMapper objectMapper = new ObjectMapper();
         FriendsPosts friendsPosts;
         try {
@@ -46,14 +46,16 @@ public class PostFeedController {
             throw new IncorrectParameterException("friendsEmails");
         }
 
-        if(friendsPosts != null){
+        if (friendsPosts != null) {
             List<Post> result = new ArrayList<>();
             for (String friend : friendsPosts.getFriends()) {
-                result.addAll(postService.findPostByUserEmail(friend, friendsPosts.getSize(), friendsPosts.getSort()));
+                result.addAll(postService.findPostsByUser(friend, friendsPosts.getSize(), friendsPosts.getSort()));
             }
             return result;
         } else {
             throw new RuntimeException("Неверно заполнены параметры");
         }
     }
+
+
 }

@@ -1,82 +1,42 @@
 package ru.yandex.practicum.catsgram.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.catsgram.controller.SimpleController;
-import ru.yandex.practicum.catsgram.exceptions.PostNotFoundException;
+import ru.yandex.practicum.catsgram.dao.PostDao;
 import ru.yandex.practicum.catsgram.exceptions.UserNotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
+import ru.yandex.practicum.catsgram.model.User;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
 public class PostService {
-    private static final Logger log = LoggerFactory.getLogger(SimpleController.class);
-    private final List<Post> posts = new ArrayList<>();
+    private final PostDao postDao;
     private final UserService userService;
-    private static Integer id = 0;
 
-    @Autowired
-    public PostService(UserService userService) {
+    public PostService(PostDao postDao, UserService userService) {
+        this.postDao = postDao;
         this.userService = userService;
     }
 
-    private static Integer getNextId() {
-        return id++;
+    public Collection<Post> findPostsByUser(String userId) {
+        User user = userService.findUserById(userId)
+                .orElseThrow(() ->new UserNotFoundException("Пользователь с идентификатором " + userId + " не найден."));
+
+        return postDao.findPostsByUser(user);
     }
 
-    public List<Post> findAll(Integer from, String sort, Integer size) {
-        log.info("Количество постов: {}", posts.size());
-        List<Post> postList = posts;
-        postList.sort(Comparator.comparing(Post::getCreationDate));
-        if (sort.equals("desc")) {
-            postList.sort(Comparator.comparing(Post::getCreationDate).reversed());
-        }
-        if (size < postList.size() && from < postList.size() && (size + from) < postList.size()) {
-            return postList.subList(from, size + from);
-        }
-        if (from > postList.size()) {
-            throw new IllegalArgumentException(String.format("Значение from=%d больше количества постов.", from));
-        }
-        return postList.subList(from, postList.size());
-    }
-
-    public Post create(Post post) throws UserNotFoundException {
-        if (userService.findUserById(post.getAuthor()).isEmpty()) {
-            throw new UserNotFoundException("Пользователь " + post.getAuthor() + " не найден.");
-        }
-        log.debug("Сохраненный объект: {}", post);
-        post.setId(getNextId());
-        posts.add(post);
-        return post;
-    }
-
-    public Post getPostById(Integer id) {
-        if (id == null || id > posts.size()-1 || id < 0) {
-           throw new PostNotFoundException("Пост не найден.");
-        }
-        return posts.get(id);
-    }
-
-    public Post findPostById(Integer id) {
-        return posts.stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new PostNotFoundException(String.format("Пост № %d не найден", id)));
-    }
-
-    public List<Post> findPostByUserEmail(String email, Integer size, String sort) {
-        return posts.stream().filter(p -> email.equals(p.getAuthor())).sorted((p0, p1) -> {
-            int comp = p0.getCreationDate().compareTo(p1.getCreationDate()); //прямой порядок сортировки
-            if(sort.equals("desc")){
-                comp = -1 * comp; //обратный порядок сортировки
-            }
-            return comp;
-        }).limit(size).collect(Collectors.toList());
+    public Collection<Post> findPostsByUser(String authorId, Integer size, String sort) {
+        return findPostsByUser(authorId)
+                .stream()
+                .sorted((p0, p1) -> {
+                    int comp = p0.getCreationDate().compareTo(p1.getCreationDate()); //прямой порядок сортировки
+                    if (sort.equals("desc")) {
+                        comp = -1 * comp; //обратный порядок сортировки
+                    }
+                    return comp;
+                })
+                .limit(size)
+                .collect(Collectors.toList());
     }
 }

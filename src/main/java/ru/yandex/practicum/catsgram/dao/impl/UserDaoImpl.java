@@ -27,8 +27,10 @@ public class UserDaoImpl implements UserDao {
         if(userRows.next()) {
             log.info("Найден пользователь: {} {}", userRows.getString("id"), userRows.getString("nickname"));
             // вы заполните данные пользователя в следующем уроке
-            User user = new User();
-            user.setId(id);
+            User user = new User(
+                    userRows.getString("id"),
+                    userRows.getString("username"),
+                    userRows.getString("nickname"));
             return Optional.of(user);
         } else {
             log.info("Пользователь с идентификатором {} не найден.", id);
