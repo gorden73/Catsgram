@@ -17,7 +17,7 @@ public class SimpleController {
         this.hackCatService = hackCatService;
     } // внедрите нужную зависимость от бина HackCatService
 
-    @PostConstruct
+    //@PostConstruct
     @GetMapping("/do-hack")
     public void doHack() {
         System.out.println(hackCatService.doHackNow()); // хакните этих котиков

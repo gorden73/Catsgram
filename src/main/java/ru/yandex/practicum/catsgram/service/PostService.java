@@ -5,12 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.catsgram.controller.SimpleController;
-import ru.yandex.practicum.catsgram.exceptions.IncorrectParameterException;
 import ru.yandex.practicum.catsgram.exceptions.PostNotFoundException;
 import ru.yandex.practicum.catsgram.exceptions.UserNotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -49,7 +47,7 @@ public class PostService {
     }
 
     public Post create(Post post) throws UserNotFoundException {
-        if (userService.getUserByEmail(post.getAuthor()) == null) {
+        if (userService.findUserById(post.getAuthor()).isEmpty()) {
             throw new UserNotFoundException("Пользователь " + post.getAuthor() + " не найден.");
         }
         log.debug("Сохраненный объект: {}", post);
