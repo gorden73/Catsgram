@@ -65,6 +65,6 @@ public class FollowDaoImpl implements FollowDao {
         String photo_url = rs.getString("photo_url");
         Integer postId = rs.getInt("post_id");
         LocalDate creationDate = rs.getDate("creation_date").toLocalDate();
-        return new Post(postId, new User(userId, userName, nickName), description, photo_url, creationDate);// реализуйте маппинг результата запроса в объект класса Follow
+        return new Post(postId, new User(userId, userName, nickName), description, photo_url, creationDate);
     }
 }

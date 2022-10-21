@@ -15,12 +15,11 @@ public class SimpleController {
     @Autowired
     public SimpleController(HackCatService hackCatService) {
         this.hackCatService = hackCatService;
-    } // внедрите нужную зависимость от бина HackCatService
+    }
 
-    //@PostConstruct
     @GetMapping("/do-hack")
     public void doHack() {
-        System.out.println(hackCatService.doHackNow()); // хакните этих котиков
+        System.out.println(hackCatService.doHackNow());
     }
 
     @GetMapping("/home")

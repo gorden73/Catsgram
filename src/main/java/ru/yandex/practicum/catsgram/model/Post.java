@@ -5,10 +5,10 @@ import java.time.LocalDate;
 public class Post {
 
     private Integer id;
-    private final User author; // автор
-    private final LocalDate creationDate; // дата создания
-    private String description; // описание
-    private String photoUrl; // url-адрес фотографии
+    private final User author;
+    private final LocalDate creationDate;
+    private String description;
+    private String photoUrl;
 
     public Post(User author, String description, String photoUrl) {
         this.author = author;

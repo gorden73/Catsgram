@@ -16,17 +16,16 @@ public class UserDaoImpl implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public UserDaoImpl(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate=jdbcTemplate;
+    public UserDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public Optional<User> findUserById(String id) {
-        // выполняем запрос к базе данных.
         SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * from cat_user where id = ?", id);
-        if(userRows.next()) {
-            log.info("Найден пользователь: {} {}", userRows.getString("id"), userRows.getString("nickname"));
-            // вы заполните данные пользователя в следующем уроке
+        if (userRows.next()) {
+            log.info("Найден пользователь: {} {}", userRows.getString("id"),
+                    userRows.getString("nickname"));
             User user = new User(
                     userRows.getString("id"),
                     userRows.getString("username"),

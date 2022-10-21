@@ -2,7 +2,7 @@ package ru.yandex.practicum.catsgram.service;
 
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.catsgram.dao.PostDao;
-import ru.yandex.practicum.catsgram.exceptions.UserNotFoundException;
+import ru.yandex.practicum.catsgram.exception.UserNotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
 import ru.yandex.practicum.catsgram.model.User;
 
@@ -21,8 +21,8 @@ public class PostService {
 
     public Collection<Post> findPostsByUser(String userId) {
         User user = userService.findUserById(userId)
-                .orElseThrow(() ->new UserNotFoundException("Пользователь с идентификатором " + userId + " не найден."));
-
+                .orElseThrow(() -> new UserNotFoundException("Пользователь с идентификатором " + userId +
+                        " не найден."));
         return postDao.findPostsByUser(user);
     }
 
@@ -30,9 +30,9 @@ public class PostService {
         return findPostsByUser(authorId)
                 .stream()
                 .sorted((p0, p1) -> {
-                    int comp = p0.getCreationDate().compareTo(p1.getCreationDate()); //прямой порядок сортировки
+                    int comp = p0.getCreationDate().compareTo(p1.getCreationDate());
                     if (sort.equals("desc")) {
-                        comp = -1 * comp; //обратный порядок сортировки
+                        comp = -1 * comp;
                     }
                     return comp;
                 })

@@ -19,7 +19,6 @@ public class HackCatService {
     public static final String JDBC_DRIVER = "org.postgresql.Driver";
 
     public void tryPassword(String jdbcPassword) {
-        final Logger log = LoggerFactory.getLogger(getClass());
         DriverManagerDataSource dataSourceConst = new DriverManagerDataSource();
         dataSourceConst.setDriverClassName(JDBC_DRIVER);
         dataSourceConst.setUrl(JDBC_URL);
@@ -39,6 +38,6 @@ public class HackCatService {
                 log.info("Такой пароль не подходит: {}", pass);
             }
         }
-        return "В списке нет подходящего пароля";// проверьте пароли из списка
+        return "В списке нет подходящего пароля";
     }
 }
