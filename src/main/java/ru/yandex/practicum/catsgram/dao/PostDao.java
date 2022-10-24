@@ -6,5 +6,8 @@ import ru.yandex.practicum.catsgram.model.User;
 import java.util.Collection;
 
 public interface PostDao {
+
+    Post addPost(Post post);
+
     Collection<Post> findPostsByUser(User user);
 }

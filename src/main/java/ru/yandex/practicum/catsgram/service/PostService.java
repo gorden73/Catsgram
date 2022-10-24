@@ -19,6 +19,10 @@ public class PostService {
         this.userService = userService;
     }
 
+    public Post addPost(Post post) {
+        return postDao.addPost(post);
+    }
+
     public Collection<Post> findPostsByUser(String userId) {
         User user = userService.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Пользователь с идентификатором " + userId +
