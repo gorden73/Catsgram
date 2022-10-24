@@ -2,10 +2,12 @@ package ru.yandex.practicum.catsgram.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.catsgram.dao.FollowDao;
 import ru.yandex.practicum.catsgram.dao.PostDao;
 import ru.yandex.practicum.catsgram.dao.UserDao;
+import ru.yandex.practicum.catsgram.exception.UserNotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
 import ru.yandex.practicum.catsgram.model.User;
 
@@ -26,6 +28,28 @@ public class FollowDaoImpl implements FollowDao {
         this.jdbcTemplate = jdbcTemplate;
         this.userDao = userDao;
         this.postDao = postDao;
+    }
+
+    @Override
+    public User addSubscription(String userId, String followerId) {
+        SqlRowSet rawUser = jdbcTemplate.queryForRowSet("SELECT id, username, nickname FROM cat_user WHERE " +
+                "id =?", userId);
+        if (rawUser.next()) {
+            SqlRowSet rawFollower = jdbcTemplate.queryForRowSet("SELECT id, username, nickname FROM cat_user WHERE " +
+                    "id =?", followerId);
+            User follower = new User();
+            if (rawFollower.next()) {
+                follower.setId(rawFollower.getString("id"));
+                follower.setUsername(rawFollower.getString("username"));
+                follower.setNickname(rawFollower.getString("nickname"));
+            } else {
+                throw new UserNotFoundException(String.format("Пользователь с id%s не найден.", followerId));
+            }
+            jdbcTemplate.update("INSERT INTO cat_follow(user_id, follow_id) VALUES(?, ?)", userId, followerId);
+            return follower;
+        } else {
+            throw new UserNotFoundException(String.format("Пользователь с id%s не найден.", userId));
+        }
     }
 
     @Override

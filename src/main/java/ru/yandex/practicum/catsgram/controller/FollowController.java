@@ -1,11 +1,10 @@
 package ru.yandex.practicum.catsgram.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.catsgram.dao.FollowDao;
 import ru.yandex.practicum.catsgram.model.Post;
+import ru.yandex.practicum.catsgram.model.User;
 import ru.yandex.practicum.catsgram.service.FollowService;
 
 import java.util.List;
@@ -19,8 +18,14 @@ public class FollowController {
         this.followService = followService;
     }
 
-    @GetMapping("/user/follows")
-    public List<Post> getFollowFeed(@RequestParam String userId, @RequestParam (defaultValue = "10") int max) {
+    @PostMapping("/users/{userId}/follows/{followerId}")
+    public User addSubscribtion(@PathVariable String userId,
+                                @PathVariable String followerId) {
+        return followService.addSubscription(userId, followerId);
+    }
+
+    @GetMapping("/users/{userId}/follows")
+    public List<Post> getFollowFeed(@PathVariable String userId, @RequestParam (defaultValue = "10") int max) {
         return followService.getFollowFeed(userId, max);
     }
 }

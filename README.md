@@ -10,7 +10,7 @@
 
 ## Функционал
 
-По функциональности Котограм похож на известную и созвучную по названию социальную сеть. 
+По функциональности Котограм будет похож на известную и созвучную по названию социальную сеть. 
 Предполагается следующая логика — взаимодействие с пользователями, публикация постов, обмен
 лайками и комментариями. Для хранения этой информации использована база данных PostgreSQL. 
 
@@ -25,7 +25,7 @@
 <br>- *[Apache Maven](https://maven.apache.org/) 4.0.0* - управление зависимостями
 <br>- *[JDBC](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/JdbcTemplate.html)* -
 компонент Spring `JdbcTemplate`
-<br>- *[PostgreSQL](https://www.postgresql.org/) 42.3.3* - основная база данных
+<br>- *[PostgreSQL](https://www.postgresql.org/) 42.3.3* - база данных
 
 ## Автор
 
