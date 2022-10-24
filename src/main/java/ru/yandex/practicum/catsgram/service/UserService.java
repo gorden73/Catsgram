@@ -14,6 +14,10 @@ public class UserService {
         this.userDao = userDao;
     }
 
+    public User addUser(User user) {
+        return userDao.addUser(user);
+    }
+
     public Optional<User> findUserById(String id) {
         return userDao.findUserById(id);
     }

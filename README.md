@@ -23,6 +23,8 @@
 2022.1.4 (Ultimate Edition)* - среда разработки
 <br>- *[Spring Boot](https://spring.io/) 2.6.1* - используемый фреймворк
 <br>- *[Apache Maven](https://maven.apache.org/) 4.0.0* - управление зависимостями
+<br>- *[JDBC](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/JdbcTemplate.html)* -
+компонент Spring `JdbcTemplate`
 <br>- *[PostgreSQL](https://www.postgresql.org/) 42.3.3* - основная база данных
 
 ## Автор
